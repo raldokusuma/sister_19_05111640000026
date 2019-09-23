@@ -33,7 +33,7 @@ class GreetServer(object):
     	if command[0]=="UPDT":
     		try:
     			with open(command[1], "a") as myfile:
-    				myfile.write(command[2])
+    				myfile.write("\n"+command[2])
     			return "update success"
     		except Exception:
     			return "update gagal"
