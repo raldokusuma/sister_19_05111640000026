@@ -1,6 +1,6 @@
 from crud import  *
 import Pyro4
-
+import threading
 
 def start_without_ns():
     daemon = Pyro4.Daemon()
@@ -14,8 +14,8 @@ def start_with_ns():
     #name server harus di start dulu dengan  pyro4-ns -n localhost -p 7777
     #gunakan URI untuk referensi name server yang akan digunakan
     #untuk mengecek service apa yang ada di ns, gunakan pyro4-nsc -n localhost -p 7777 list
-    daemon = Pyro4.Daemon(host="10.151.36.29")
-    ns = Pyro4.locateNS("10.151.36.29",7777)
+    daemon = Pyro4.Daemon(host="localhost")
+    ns = Pyro4.locateNS("localhost",7777)
     x_GreetServer = Pyro4.expose(GreetServer)
     uri_greetserver = daemon.register(x_GreetServer)
     print("URI greet server : ", uri_greetserver)
