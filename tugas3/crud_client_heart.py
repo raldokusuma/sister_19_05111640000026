@@ -31,7 +31,7 @@ def ping(name):
             count+=1
             print("\nserver down count "+str(count))
             if count>2:
-                os.exit(1)
+                os._exit(1)
         time.sleep(2)
 
 def heartbeat1(i,myid):
@@ -46,9 +46,10 @@ def heartbeat1(i,myid):
             seq=gserver.central_heartbeat(seq,myid)
             print("seq "+str(seq))
         except Exception as e:
+            count+=1
             print("server is down")
             if count>2:
-                os.exit(1)
+                os._exit(1)
         time.sleep(2)
 
 def heartbeat2(i,myid):
@@ -61,12 +62,13 @@ def heartbeat2(i,myid):
             uri = "PYRONAME:greetserver@localhost:7777"
             gserver = Pyro4.Proxy(uri)
             seq,all_client_seq=gserver.all_heartbeat(seq,myid)
+            print("All Client Seq: \n"+str(all_client_seq))
         except Exception as e:
+            count+=1
             print("server is down")
             if count>2:
-                os.exit(1)
+                os._exit(1)
         time.sleep(2)
-        print("All Client Seq: \n"+str(all_client_seq))
 
 if __name__=='__main__':
     # PING ACK
