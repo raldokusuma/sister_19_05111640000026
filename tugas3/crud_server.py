@@ -1,6 +1,7 @@
 from crud import  *
 import Pyro4
 import threading
+import uuid
 
 def start_without_ns():
     daemon = Pyro4.Daemon()
@@ -8,7 +9,6 @@ def start_without_ns():
     uri = daemon.register(x_GreetServer)
     print("my URI : ", uri)
     daemon.requestLoop()
-
 
 def start_with_ns():
     #name server harus di start dulu dengan  pyro4-ns -n localhost -p 7777
@@ -19,7 +19,7 @@ def start_with_ns():
     x_GreetServer = Pyro4.expose(GreetServer)
     uri_greetserver = daemon.register(x_GreetServer)
     print("URI greet server : ", uri_greetserver)
-    ns.register("greetserver", uri_greetserver)
+    ns.register("greetserver",  uri_greetserver)
     daemon.requestLoop()
 
 

@@ -4,7 +4,6 @@ import time
 import os
 import uuid
 
-seq=0
 def test_no_ns():
     uri = "PYRO:obj_27d7c59497c44c688319f7d8a4a95935@localhost:40549"
     gserver = Pyro4.Proxy(uri)
@@ -33,35 +32,10 @@ def ping(name):
                 os.exit(1)
         time.sleep(2)
 
-def heartbeat1(i,myid):
-    global seq
-    count=0
-    uri = "PYRONAME:greetserver@localhost:7777"
-    gserver = Pyro4.Proxy(uri)
-    while True:
-        try:
-            uri = "PYRONAME:greetserver@localhost:7777"
-            gserver = Pyro4.Proxy(uri)
-            seq=gserver.central_heartbeat(seq,myid)
-            print("seq "+str(seq))
-        except Exception as e:
-            print("server is down")
-            if count>2:
-                os.exit(1)
-        time.sleep(2)
-
-
 if __name__=='__main__':
-    # PING ACK
-    # x = threading.Thread(target=ping, args=(1,))
-    # x.start()
-
-    # HEARTBEAT CENTRALIZED
-    myid=uuid.uuid4()
-    x = threading.Thread(target=heartbeat1, args=(1,myid))
+    x = threading.Thread(target=ping, args=(1,))
     x.start()
-
-    
+    print("uuid"+str(uuid.uuid4()))
     while True:
         command = input("Command : ")
         CRUD(command)

@@ -1,6 +1,7 @@
 import random
 import os
 
+seq = {}
 class GreetServer(object):
     def __init__(self):
         pass
@@ -37,6 +38,31 @@ class GreetServer(object):
     			return "update success"
     		except Exception:
     			return "update gagal"
+
+    # def ping(name):
+    # count=0
+    # while True:
+    #     try:
+    #         ns = Pyro4.locateNS("localhost",7777)
+    #         count=0
+    #     except Exception as e:
+    #         count+=1
+    #         print("\nserver down count "+str(count))
+    #         if count>2:
+    #             os.exit(1)
+    #     time.sleep(2)
+
+    def central_heartbeat(self,client_seq,id_client):
+        global seq
+        try:
+            # ns = Pyro4.locateNS("localhost",7777)
+            if seq[str(id_client)]==client_seq:
+                seq[str(id_client)]+=1
+                client_seq+=1
+                return client_seq
+        except Exception as e:
+            seq[str(id_client)]=0
+            return 0
     		
 
 if __name__ == '__main__':
