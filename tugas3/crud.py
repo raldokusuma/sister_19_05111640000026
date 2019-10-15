@@ -63,7 +63,18 @@ class GreetServer(object):
         except Exception as e:
             seq[str(id_client)]=0
             return 0
-    		
+    
+    def all_heartbeat(self,client_seq,id_client):
+        global seq
+        try:
+            # ns = Pyro4.locateNS("localhost",7777)
+            if seq[str(id_client)]==client_seq:
+                seq[str(id_client)]+=1
+                client_seq+=1
+                return client_seq,seq
+        except Exception as e:
+            seq[str(id_client)]=0
+            return 0,seq
 
 if __name__ == '__main__':
     k = GreetServer()
