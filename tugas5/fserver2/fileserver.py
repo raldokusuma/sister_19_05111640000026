@@ -63,7 +63,9 @@ class FileServer(object):
             content = content['data']
         try:
             f = open(nama,'w+b')
-            f.write(content.encode())
+            content=content.encode()
+            content = base64.b64decode(content)
+            f.write(content)
             f.close()
             replserver=self.replserver_object()
             replserver.consistency(servername,"update",name,oldcontent)

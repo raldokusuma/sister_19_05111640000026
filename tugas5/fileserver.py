@@ -59,7 +59,9 @@ class FileServer(object):
             content = content['data']
         try:
             f = open(nama,'w+b')
-            f.write(content.encode())
+            content=content.encode()
+            content = base64.b64decode(content)
+            f.write(content)
             f.close()
             return self.create_return_message('101','OK')
         except Exception as e:
@@ -83,22 +85,20 @@ class FileServer(object):
         return serverlist
 
     def consistency(self,from_server,command,filename,content=None):
-        try:
-            if command=="create":
-                for server in serverlist:
-                    if server != from_server:
-                        self.create(filename,server)
-            elif command=='delete':
-                for server in serverlist:
-                    if server != from_server:
-                        self.delete(filename,server)
-            elif command=='update':
-                for server in serverlist:
-                    if server != from_server:
-                        self.update(filename,content,server)
-            return "ok"
-        except Exception as e:
-            return "error"
+        if command=="create":
+            for server in serverlist:
+                if server != from_server:
+                    self.create(filename,server)
+        elif command=='delete':
+            for server in serverlist:
+                if server != from_server:
+                    self.delete(filename,server)
+        elif command=='update':
+            for server in serverlist:
+                if server != from_server:
+                    self.update(filename,content,server)
+        return "ok"
+
         
                 
 

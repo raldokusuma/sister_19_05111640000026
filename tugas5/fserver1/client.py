@@ -21,8 +21,8 @@ if __name__=='__main__':
     # f.create('slide2.pptx')
     # f.update('slide2.pptx', content = open('slide2.pptx','rb+').read())
     # print(f.list())
-    d = f.read('slide1.pdf')
-    print(d)
+    # d = f.read('slide1.pdf')
+    
     # #kembalikan ke bentuk semula ke dalam file name slide1-kembali.pdf
     # open('slide1-kembali.pdf','w+b').write(base64.b64decode(d['data']))
 
