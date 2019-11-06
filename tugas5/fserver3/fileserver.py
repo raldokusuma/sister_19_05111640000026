@@ -58,13 +58,15 @@ class FileServer(object):
     def update(self,name='filename000',content=''):
         nama='FFF-{}' . format(name)
         print("update ops {}" . format(nama))
-
+        oldcontent=content
         if (str(type(content))=="<class 'dict'>"):
             content = content['data']
         try:
             f = open(nama,'w+b')
             f.write(content.encode())
             f.close()
+            replserver=self.replserver_object()
+            replserver.consistency(servername,"update",name,oldcontent)
             return self.create_return_message('101','OK')
         except Exception as e:
             return self.create_return_message('500','Error',str(e))

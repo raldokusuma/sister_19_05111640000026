@@ -50,8 +50,9 @@ class FileServer(object):
         except:
             return self.create_return_message('500','Error')
             
-    def update(self,name='filename000',content=''):
+    def update(self,name='filename000',content='',location=''):
         nama='FFF-{}' . format(name)
+        nama=location+'/'+nama
         print("update ops {}" . format(nama))
 
         if (str(type(content))=="<class 'dict'>"):
@@ -82,15 +83,23 @@ class FileServer(object):
         return serverlist
 
     def consistency(self,from_server,command,filename,content=None):
-        if command=="create":
-            for server in serverlist:
-                if server != from_server:
-                    self.create(filename,server)
-        elif command=='delete':
-            for server in serverlist:
-                if server != from_server:
-                    self.delete(filename,server)
-        return "ok"
+        try:
+            if command=="create":
+                for server in serverlist:
+                    if server != from_server:
+                        self.create(filename,server)
+            elif command=='delete':
+                for server in serverlist:
+                    if server != from_server:
+                        self.delete(filename,server)
+            elif command=='update':
+                for server in serverlist:
+                    if server != from_server:
+                        self.update(filename,content,server)
+            return "ok"
+        except Exception as e:
+            return "error"
+        
                 
 
 if __name__ == '__main__':
