@@ -28,7 +28,8 @@ class FileServer(object):
         except:
             return self.create_return_message('500','Error')
 
-    def create(self, name='filename000'):
+    def create(self, name='filename000',replication=1):
+        global servername
         nama='FFF-{}' . format(name)
         print("create ops {}" . format(nama))
         try:
@@ -36,9 +37,9 @@ class FileServer(object):
                 return self.create_return_message('102', 'OK','File Exists')
             f = open(nama,'wb',buffering=0)
             f.close()
-            
-            replserver=self.replserver_object()
-            replserver.consistency(servername,"create",name,None)
+            if replication==1:
+                replserver=self.replserver_object()
+                replserver.consistency(servername,"create",name,None)
             return self.create_return_message('100','OK')
         except Exception as e:
             print(e)
@@ -55,7 +56,8 @@ class FileServer(object):
         except:
             return self.create_return_message('500','Error')
             
-    def update(self,name='filename000',content=''):
+    def update(self,name='filename000',content='',replication=1):
+        global servername
         nama='FFF-{}' . format(name)
         print("update ops {}" . format(nama))
         oldcontent=content
@@ -67,26 +69,31 @@ class FileServer(object):
             content = base64.b64decode(content)
             f.write(content)
             f.close()
-            replserver=self.replserver_object()
-            replserver.consistency(servername,"update",name,oldcontent)
+            if replication==1:
+                replserver=self.replserver_object()
+                replserver.consistency(servername,"update",name,oldcontent)
             return self.create_return_message('101','OK')
         except Exception as e:
             return self.create_return_message('500','Error',str(e))
 
-    def delete(self,name='filename000'):
+    def delete(self,name='filename000',replication=1):
+        global servername
         nama='FFF-{}' . format(name)
         print("delete ops {}" . format(nama))
 
         try:
             os.remove(nama)
-            replserver=self.replserver_object()
-            replserver.consistency(servername,"delete",name,None)
+            if replication==1:
+                replserver=self.replserver_object()
+                replserver.consistency(servername,"delete",name,None)
             return self.create_return_message('101','OK')
         except:
             return self.create_return_message('500','Error')
 
     def add_servername(self,server_name):
+        global servername
         servername=server_name
+        return servername
 
     def get_servername(self):
         return servername

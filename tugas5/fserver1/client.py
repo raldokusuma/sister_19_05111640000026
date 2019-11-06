@@ -14,15 +14,16 @@ if __name__=='__main__':
     f = get_fileserver_object()
     f.add_servername(sys.argv[1])
     print(f.get_servername())
-    ret=f.create('slide1.pdf')
+    # ret=f.create('slide1.pdf')
     # print(ret)
-    f.update('slide1.pdf', content = open('slide1-old.pdf','rb+').read() )
+    # f.update('slide1.pdf', content = open('slide1-old.pdf','rb+').read() )
+    ret=f.delete('slide1.pdf')
 
     # f.create('slide2.pptx')
     # f.update('slide2.pptx', content = open('slide2.pptx','rb+').read())
     # print(f.list())
     # d = f.read('slide1.pdf')
-    
+
     # #kembalikan ke bentuk semula ke dalam file name slide1-kembali.pdf
     # open('slide1-kembali.pdf','w+b').write(base64.b64decode(d['data']))
 

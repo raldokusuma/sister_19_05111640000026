@@ -10,11 +10,6 @@ class FileServer(object):
     def create_return_message(self,kode='000',message='kosong',data=None):
         return dict(kode=kode,message=message,data=data)
 
-    def fserver_object(self,servername):
-        uri = "PYRONAME:{}@localhost:7777".format(servername)
-        replserver = Pyro4.Proxy(uri)
-        return replserver
-
     def list(self):
         print("list ops")
         try:
@@ -84,19 +79,31 @@ class FileServer(object):
     def get_serverlist(self):
         return serverlist
 
+    def fserver_object(self,servername):
+        uri = "PYRONAME:{}@localhost:7777".format(servername)
+        replserver = Pyro4.Proxy(uri)
+        return replserver
+
     def consistency(self,from_server,command,filename,content=None):
         if command=="create":
             for server in serverlist:
-                if server != from_server:
-                    self.create(filename,server)
+                if str(server) != str(from_server):
+                    print(str(server))
+                    fserver=self.fserver_object(server)
+                    fserver.create(filename,0)
+                    # self.create(filename,server)
         elif command=='delete':
             for server in serverlist:
-                if server != from_server:
-                    self.delete(filename,server)
+                if str(server) != str(from_server):
+                    fserver=self.fserver_object(server)
+                    fserver.delete(filename,0)
+                    # self.delete(filename,server)
         elif command=='update':
             for server in serverlist:
-                if server != from_server:
-                    self.update(filename,content,server)
+                if str(server) != str(from_server):
+                    fserver=self.fserver_object(server)
+                    fserver.update(filename,content,0)
+                    # self.update(filename,content,server)
         return "ok"
 
         
