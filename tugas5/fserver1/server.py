@@ -27,13 +27,13 @@ def start_with_ns():
     #ns.register("fileserver3", uri_fileserver)
     daemon.requestLoop()
 
-def get_fileserver_object():
+def replserver_object():
     uri = "PYRONAME:repl_server@localhost:7777"
     fserver = Pyro4.Proxy(uri)
     return fserver
 
 if __name__ == '__main__':
-    f = get_fileserver_object()
-    f.add_server(sys.argv[1])
-    print(f.get_serverlist())
+    repl_s = replserver_object()
+    repl_s.add_server(sys.argv[1])
+    print(repl_s.get_serverlist())
     start_with_ns()

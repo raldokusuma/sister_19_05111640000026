@@ -1,5 +1,6 @@
 import os
 import base64
+import Pyro4
 
 serverlist=[]
 class FileServer(object):
@@ -8,6 +9,11 @@ class FileServer(object):
 
     def create_return_message(self,kode='000',message='kosong',data=None):
         return dict(kode=kode,message=message,data=data)
+
+    def fserver_object(self,servername):
+        uri = "PYRONAME:{}@localhost:7777".format(servername)
+        replserver = Pyro4.Proxy(uri)
+        return replserver
 
     def list(self):
         print("list ops")
@@ -20,9 +26,10 @@ class FileServer(object):
         except:
             return self.create_return_message('500','Error')
 
-    def create(self, name='filename000'):
+    def create(self, name='filename000',location=''):
         nama='FFF-{}' . format(name)
         print("create ops {}" . format(nama))
+        nama=location+'/'+nama
         try:
             if os.path.exists(name):
                 return self.create_return_message('102', 'OK','File Exists')
@@ -73,6 +80,13 @@ class FileServer(object):
     def get_serverlist(self):
         return serverlist
 
+    def consistency(self,from_server,command,filename,content=None):
+        if command=="create":
+            for server in serverlist:
+                if server != from_server:
+                    self.create(filename,server)
+        return "ok"
+                
 
 if __name__ == '__main__':
     k = FileServer()

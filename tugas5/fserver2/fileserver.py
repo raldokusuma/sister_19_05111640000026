@@ -1,13 +1,21 @@
 import os
+import Pyro4
 import base64
 
-serverlist=[]
+# repl_uri = "PYRONAME:repl_server@localhost:7777"
+# replserver = Pyro4.Proxy(repl_uri)
+servername=''
 class FileServer(object):
     def __init__(self):
         pass
 
     def create_return_message(self,kode='000',message='kosong',data=None):
         return dict(kode=kode,message=message,data=data)
+
+    def replserver_object(self):
+        uri = "PYRONAME:repl_server@localhost:7777"
+        replserver = Pyro4.Proxy(uri)
+        return replserver
 
     def list(self):
         print("list ops")
@@ -28,8 +36,12 @@ class FileServer(object):
                 return self.create_return_message('102', 'OK','File Exists')
             f = open(nama,'wb',buffering=0)
             f.close()
+            
+            replserver=self.replserver_object()
+            replserver.consistency(servername,"create",name,None)
             return self.create_return_message('100','OK')
-        except:
+        except Exception as e:
+            print(e)
             return self.create_return_message('500','Error')
 
     def read(self,name='filename000'):
@@ -67,11 +79,11 @@ class FileServer(object):
         except:
             return self.create_return_message('500','Error')
 
-    def add_server(self,server_name):
-        serverlist.append(server_name)
+    def add_servername(self,server_name):
+        servername=server_name
 
-    def get_serverlist(self):
-        return serverlist
+    def get_servername(self):
+        return servername
 
 
 if __name__ == '__main__':

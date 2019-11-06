@@ -12,20 +12,21 @@ def get_fileserver_object():
 
 if __name__=='__main__':
     f = get_fileserver_object()
-    f.add_server(sys.argv[1])
-    print(f.get_serverlist())
-    f.create('slide1.pdf')
-    f.update('slide1.pdf', content = open('slide1.pdf','rb+').read() )
+    f.add_servername(sys.argv[1])
+    print(f.get_servername())
+    ret=f.create('slide1.pdf')
+    print(ret)
+    # f.update('slide1.pdf', content = open('slide1.pdf','rb+').read() )
 
-    f.create('slide2.pptx')
-    f.update('slide2.pptx', content = open('slide2.pptx','rb+').read())
-    print(f.list())
-    d = f.read('slide1.pdf')
-    #kembalikan ke bentuk semula ke dalam file name slide1-kembali.pdf
-    open('slide1-kembali.pdf','w+b').write(base64.b64decode(d['data']))
+    # f.create('slide2.pptx')
+    # f.update('slide2.pptx', content = open('slide2.pptx','rb+').read())
+    # print(f.list())
+    # d = f.read('slide1.pdf')
+    # #kembalikan ke bentuk semula ke dalam file name slide1-kembali.pdf
+    # open('slide1-kembali.pdf','w+b').write(base64.b64decode(d['data']))
 
-    k = f.read('slide2.pptx')
-    #kembalikan ke bentuk semula ke dalam file name slide2-kembali.pptx
-    open('slide2-kembali.pptx','w+b').write(base64.b64decode(k['data']))
+    # k = f.read('slide2.pptx')
+    # #kembalikan ke bentuk semula ke dalam file name slide2-kembali.pptx
+    # open('slide2-kembali.pptx','w+b').write(base64.b64decode(k['data']))
 
 
