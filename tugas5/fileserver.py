@@ -64,8 +64,9 @@ class FileServer(object):
         except Exception as e:
             return self.create_return_message('500','Error',str(e))
 
-    def delete(self,name='filename000'):
+    def delete(self,name='filename000',location=''):
         nama='FFF-{}' . format(name)
+        nama=location+'/'+nama
         print("delete ops {}" . format(nama))
 
         try:
@@ -85,6 +86,10 @@ class FileServer(object):
             for server in serverlist:
                 if server != from_server:
                     self.create(filename,server)
+        elif command=='delete':
+            for server in serverlist:
+                if server != from_server:
+                    self.delete(filename,server)
         return "ok"
                 
 

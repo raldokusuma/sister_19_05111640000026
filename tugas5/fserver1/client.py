@@ -14,7 +14,7 @@ if __name__=='__main__':
     f = get_fileserver_object()
     f.add_servername(sys.argv[1])
     print(f.get_servername())
-    ret=f.create('slide1.pdf')
+    ret=f.delete('slide1.pdf')
     print(ret)
     # f.update('slide1.pdf', content = open('slide1.pdf','rb+').read() )
 

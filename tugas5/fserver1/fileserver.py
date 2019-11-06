@@ -75,6 +75,8 @@ class FileServer(object):
 
         try:
             os.remove(nama)
+            replserver=self.replserver_object()
+            replserver.consistency(servername,"delete",name,None)
             return self.create_return_message('101','OK')
         except:
             return self.create_return_message('500','Error')
